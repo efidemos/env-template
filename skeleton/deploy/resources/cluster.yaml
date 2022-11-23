@@ -1,0 +1,15 @@
+apiVersion: punasusi.com/v1alpha1
+kind: ClusterClaim
+metadata:
+  name: ${{ values.component_id }}-eks
+  labels:
+    cluster-owner: ${{ values.component_id }}
+spec:
+  id: ${{ values.component_id }}-eks
+  compositionSelector:
+    matchLabels:
+      provider: aws
+      cluster: eks
+  parameters:
+    nodeSize: medium
+    minNodeCount: 3
