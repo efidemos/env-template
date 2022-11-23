@@ -1,11 +1,11 @@
 apiVersion: punasusi.com/v1alpha1
 kind: ClusterClaim
 metadata:
-  name: ${{ values.component_id }}-eks
+  name: ${{ values.component_id }}
   labels:
     cluster-owner: ${{ values.component_id }}
 spec:
-  id: ${{ values.component_id }}-eks
+  id: ${{ values.component_id }}
   compositionSelector:
     matchLabels:
       provider: aws
