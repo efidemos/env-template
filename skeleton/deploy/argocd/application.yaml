@@ -11,14 +11,14 @@ spec:
   source:
     directory:
       jsonnet: {}
-      recurse: true
+      recurse: false
     path: deploy/resources
     repoURL: https://github.com/tanuudemo/${{ values.component_id }}.git
     targetRevision: HEAD
   syncPolicy:
     automated:
-      prune: true
-      selfHeal: true
+      prune: false
+      selfHeal: false
     syncOptions:
     - CreateNamespace=true
     - Replace=true
