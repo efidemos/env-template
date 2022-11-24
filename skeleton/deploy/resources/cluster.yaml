@@ -1,6 +1,8 @@
 apiVersion: punasusi.com/v1alpha1
 kind: ClusterClaim
 metadata:
+  annotations:
+    argocd.argoproj.io/compare-options: IgnoreExtraneous
   name: ${{ values.component_id }}
   labels:
     cluster-owner: ${{ values.component_id }}
