@@ -45,7 +45,6 @@ spec:
             - small
             - medium
             - large
-    - title: Misc extra info
         prometheus_version:
           title: Prometheus Version
           type: string
