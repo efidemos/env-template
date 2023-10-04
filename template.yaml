@@ -77,7 +77,7 @@ spec:
       name: Register
       action: catalog:register
       input:
-        catalogInfoUrl: https://github.com/efidemos/infra/blob/main/demo/${{ parameters.component_id }}-catalog.yaml
+        catalogInfoUrl: https://github.com/efidemos/infra/blob/main/catalog/${{ parameters.component_id }}-catalog.yaml
 
   output:
     links:
