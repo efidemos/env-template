@@ -1,0 +1,21 @@
+apiVersion: tanuu.fi/v1alpha1
+kind: Cluster
+metadata:
+  name: ${{values.component_id | dump}}
+  namespace: default
+  annotations:
+    uptest.upbound.io/pre-delete-hook: testhooks/delete-release.sh
+spec:
+  id: ${{values.component_id | dump}}
+  parameters:
+    version: ${{values.kubernetes_version | dump}}
+    nodes:
+      count: ${{values.num_nodes | dump}}
+      size: ${{values.node_size | dump}}
+    services:
+      operators:
+        prometheus:
+          version: ${{values.prometheus_version | dump}}
+  writeConnectionSecretToRef:
+    name: ${{values.component_id | dump}}-kubeconfig
+    namespace: default

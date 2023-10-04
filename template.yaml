@@ -3,84 +3,85 @@ kind: Template
 metadata:
   name: demo-environment
   title: Demo Env
-  description: Create a demo environment with crossplane. 
+  description: Create a demo environment. 
   tags:
+    - aws
+    - recommended
     - crossplane
     - environments
 spec:
-  owner: andy@tanuu.fi
+  owner: admin
   type: repository
   parameters:
-    - title: Provide some simple information
+    - title: Provide some information
       required:
         - component_id
         - description
-        - owner
       properties:
         component_id:
           title: Name
           type: string
           description: Name of the environment
-          #ui:field: EntityNamePicker
         description:
           title: Description
           type: string
           description: Describe your environment
-        owner:
-          title: Owner
+        kubernetes_version:
+          title: Kubernetes Version
           type: string
-          description: Owner of the environment
-          ui:field: OwnerPicker
-          ui:options:
-            allowedKinds:
-              - Group
-    - title: Choose a location
-      required:
-        - repoUrl
-      properties:
-        repoUrl:
-          title: Repository Location
+          description: Name of the environment
+          default: "1.26"
+        num_nodes:
+          title: Nodes
+          type: integer
+          description: Number of nodes
+          default: 3
+        node_size:
+          title: Node Size
           type: string
-          ui:field: RepoUrlPicker
-          ui:options:
-            allowedHosts:
-              - github.com
+          description: Size of nodes to be used
+          default: small
+          enum:
+            - small
+            - medium
+            - large
+    - title: Misc extra info
+        prometheus_version:
+          title: Prometheus Version
+          type: string
+          description: Version of Prometheus to use
+          default: "1.26"
   steps:
     - id: template
       name: Fetch Skeleton + Template
       action: fetch:template
       input:
         url: ./skeleton
-        copyWithoutRender:
-          - .github/workflows/*
         values:
           component_id: ${{ parameters.component_id }}
           description: ${{ parameters.description }}
-          destination: ${{ parameters.repoUrl | parseRepoUrl }}
-          owner: ${{ parameters.owner }}
+          kubernetes_version: ${{ parameters.kubernetes_version }}
+          num_nodes: ${{ parameters.num_nodes }}
+          node_size: ${{ parameters.node_size }}
+          prometheus_version: ${{ parameters.prometheus_version }}
 
-    - id: publish
-      name: Publish
-      action: publish:github
+    - id: publish-pr
+      name: Publish PR
+      action: publish:github:pull-request
       input:
-        allowedHosts: ["github.com"]
-        description: This is ${{ parameters.component_id }}
-        repoUrl: ${{ parameters.repoUrl }}
-        defaultBranch: main
-        repoVisibility: public
-
+        repoUrl: github.com?repo=infra&owner=efidemos
+        branchName:  ${{ parameters.component_id }}-environment
+        title: Add environment ${{ parameters.component_id }}
+        description: PR created from Backstage
 
     - id: register
       name: Register
       action: catalog:register
       input:
-        repoContentsUrl: ${{ steps.publish.output.repoContentsUrl }}
-        catalogInfoPath: "/catalog-info.yaml"
+        catalogInfoUrl: https://github.com/efidemos/infra/blob/main/demo/${{ parameters.component_id }}-catalog.yaml
 
   output:
     links:
-      - title: Repository
-        url: ${{ steps.publish.output.remoteUrl }}
       - title: Open in catalog
         icon: catalog
         entityRef: ${{ steps.register.output.entityRef }}

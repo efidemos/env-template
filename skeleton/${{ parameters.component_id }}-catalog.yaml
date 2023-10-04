@@ -5,10 +5,11 @@ metadata:
   {%- if values.description %}
   description: ${{values.description | dump}}
   {%- endif %}
-  annotations:
-    github.com/project-slug: ${{values.destination.owner + "/" + values.destination.repo}}
-    backstage.io/techdocs-ref: dir:.
+  links:
+    - url:  https://github.com/efidemos/infra
+      title: GitHub Repo
+      icon: github
 spec:
-  type: Environment
+  type: environment
   lifecycle: experimental
-  owner: ${{values.owner | dump}}
+  owner: TechServices
