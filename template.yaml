@@ -73,6 +73,12 @@ spec:
         title: Add environment ${{ parameters.component_id }}
         description: PR created from Backstage
 
+    - action: debug:wait
+      id: wait-1min
+      name: Waiting for 1 minutes
+      input:
+        minutes: 2
+
     - id: register
       name: Register
       action: catalog:register
