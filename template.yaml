@@ -64,11 +64,14 @@ spec:
           node_size: ${{ parameters.node_size }}
           prometheus_version: ${{ parameters.prometheus_version }}
 
-    - id: publish
-      name: Publish
-      action: publish:github
+    - id: publish-pr
+      name: Publish PR
+      action: publish:github:pull-request
       input:
         repoUrl: github.com?repo=infra&owner=efidemos
+        branchName:  ${{ parameters.component_id }}-environment
+        title: Add environment ${{ parameters.component_id }}
+        description: PR created from Backstage
 
     - id: register
       name: Register
