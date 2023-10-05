@@ -17,5 +17,5 @@ spec:
         prometheus:
           version: ${{values.prometheus_version | dump}}
   writeConnectionSecretToRef:
-    name: ${{values.component_id | dump}}-kubeconfig
+    name: ${{values.component_id }}-kubeconfig
     namespace: default
