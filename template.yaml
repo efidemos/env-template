@@ -78,6 +78,7 @@ spec:
       action: catalog:register
       input:
         catalogInfoUrl: https://github.com/efidemos/infra/blob/main/catalog/${{ parameters.component_id }}-catalog.yaml
+        optional: true
 
   output:
     links:
